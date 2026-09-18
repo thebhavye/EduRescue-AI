@@ -5,18 +5,34 @@ export interface Announcement {
   rawText: string;
   deadline?: string;
   requiredAction?: string;
+  /** Legacy/test-compat fields — mock service may populate these. */
+  action?: string;
+  requirements?: Record<string, unknown>;
+  eligibleBranches?: string[];
+  eligibleYears?: number[];
+  minCgpa?: number;
+}
+
+export type Priority = 'high' | 'medium' | 'low' | 'not_relevant';
+
+export interface WhyReason {
+  label: string;
+  polarity: 'positive' | 'negative' | 'neutral';
 }
 
 export interface ActionItem {
   id: string;
+  announcementId?: string;
   title: string;
-  priority: 'high' | 'medium' | 'low' | 'not_relevant';
+  priority: Priority;
   category: string;
   deadline: string;
   requiredAction: string;
   eligibility: {
     status: 'eligible' | 'not_eligible' | 'action_optional';
+    summary?: string;
   };
+  why?: WhyReason[];
 }
 
 export interface StudentProfile {

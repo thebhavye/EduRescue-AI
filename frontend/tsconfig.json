@@ -12,8 +12,6 @@
     "isolatedModules": true,
     "noEmit": true,
     "esModuleInterop": true,
-    "downlevelIter": true,
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }

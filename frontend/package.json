@@ -10,12 +10,11 @@
 		"preview": "vite preview",
 		"test": "vitest run"
 	},
-	"dependencies": {
-		"motion": "^13.4.0",
-		"react": "^19.2.8",
-		"react-bits": "^1.0.5",
-		"react-dom": "^19.2.8"
-	},
+  "dependencies": {
+    "ogl": "^1.0.8",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
 	"devDependencies": {
 		"@testing-library/jest-dom": "^6.9.1",
 		"@testing-library/react": "^16.3.1",

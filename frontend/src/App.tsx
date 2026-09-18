@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ShinyText } from './components/ShinyText';
 import { ActionQueue } from './components/ActionQueue';
 import { AnnouncementInput } from './components/AnnouncementInput';
 import { ProfileSwitcher } from './components/ProfileSwitcher';
@@ -13,6 +12,7 @@ import { firstProfileError, validateProfile } from './profileValidation';
 import type { FieldErrors } from './profileValidation';
 import './styles.css';
 import { SummaryMetrics } from './components/SummaryMetrics';
+import { MoltenMetal } from './components/MoltenMetal/MoltenMetal';
 import type {
   ActionItem,
   Announcement,
@@ -153,19 +153,20 @@ export default function App() {
     // Increment request token so any in-flight response from a previous
     // student/profile is ignored when it resolves.
     const currentRequestId = requestId + 1;
+    const studentIdAtStart = selectedId;
     setRequestId(currentRequestId);
     setStatus('processing');
     setError(null);
     try {
-      // Runs input + profile validation and simulates latency. The mock
-      // result matches the derived queue by construction; when the real
-      // API lands, its response will feed the queue here instead.
-      await announcementService.processAnnouncements(inputText, student);
+      // The mock result drives the displayed queue: parsed announcements
+      // replace the queue input so pasted text actually changes the UI.
+      const result = await announcementService.processAnnouncements(inputText, student);
       // Ignore stale response if request was superseded or student changed.
-      if (requestIdRef.current !== currentRequestId || selectedId !== student.id) return;
+      if (requestIdRef.current !== currentRequestId || selectedId !== studentIdAtStart) return;
+      setAnnouncements(result.announcements);
       setStatus('success');
     } catch (e) {
-      if (requestIdRef.current !== currentRequestId || selectedId !== student.id) return;
+      if (requestIdRef.current !== currentRequestId || selectedId !== studentIdAtStart) return;
       setError(e instanceof Error ? e.message : 'Processing failed.');
       setStatus('error');
     }
@@ -205,6 +206,31 @@ export default function App() {
 
   return (
     <div className="app">
+      <div className="molten-background" aria-hidden="true">
+        <MoltenMetal
+          color1="#ede9fe"
+          color2="#a855f7"
+          color3="#312e81"
+          colorMode="molten"
+          speed={0.35}
+          scale={4}
+          detail={3}
+          glow={1.25}
+          coreSize={0.1}
+          swirl={1}
+          fold={-0.2}
+          blackPoint={0.025}
+          brightness={1.2}
+          opacity={1.0}
+          grain
+          grainIntensity={0.05}
+          mouseInteraction
+          mouseStrength={0.3}
+          lightMode
+          backgroundColor="#ffffff"
+        />
+      </div>
+      <div className="readability-overlay" aria-hidden="true" />
       <a className="skip-link" href="#queue-heading">
         Skip to action queue
       </a>
@@ -212,7 +238,7 @@ export default function App() {
         <div className="container hero-inner">
           <div>
             <p className="eyebrow">EduRescue · Never miss something important</p>
-            <ShinyText text="EduRescue" className="hero-heading" speed={2} color="#8892a3" shineColor="#f8fafc" spread={120} />
+            <h1 className="hero-heading">EduRescue</h1>
             <p className="hero-sub">
               Same announcements + different students = different action
               queues. Switch profiles to see personalization in action.
