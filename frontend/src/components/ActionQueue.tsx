@@ -16,7 +16,7 @@ const PRIORITY_META: Record<ActionItem['priority'], { label: string; icon: strin
 
 export function ActionQueue({ items, status, studentName, onOpen }: Props) {
   return (
-    <section className="card" aria-labelledby="queue-heading">
+    <section className="card" id="action-queue" aria-labelledby="queue-heading">
       <div className="card-head">
         <h2 id="queue-heading">Personalized action queue</h2>
         <span className="muted small">for {studentName}</span>

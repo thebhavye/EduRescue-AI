@@ -13,6 +13,13 @@ import type { FieldErrors } from './profileValidation';
 import './styles.css';
 import { SummaryMetrics } from './components/SummaryMetrics';
 import { MoltenMetal } from './components/MoltenMetal/MoltenMetal';
+import { ParticleText } from './components/ParticleText/ParticleText';
+import { WarpText } from './components/WarpText/WarpText';
+import { GooeyNav } from './components/GooeyNav/GooeyNav';
+import { ScrollExpand } from './components/ScrollExpand/ScrollExpand';
+import { Dock } from './components/Dock/Dock';
+import { BorderGlow } from './components/BorderGlow/BorderGlow';
+import scrollArt from './assets/edurescue-scroll.svg';
 import type {
   ActionItem,
   Announcement,
@@ -204,6 +211,11 @@ export default function App() {
   const studentDisplayName =
     student?.name.replace(' (Demo)', '') || 'student';
 
+  // Visual-only quick navigation for the floating Dock (no app state).
+  const scrollToSection = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   return (
     <div className="app">
       <div className="molten-background" aria-hidden="true">
@@ -234,15 +246,59 @@ export default function App() {
       <a className="skip-link" href="#queue-heading">
         Skip to action queue
       </a>
-      <header className="hero">
+      <header className="hero" id="overview">
         <div className="container hero-inner">
-          <div>
+          <div className="hero-copy">
             <p className="eyebrow">EduRescue · Never miss something important</p>
-            <h1 className="hero-heading">EduRescue</h1>
+            <div className="hero-title-block">
+              <ParticleText
+                text="EduRescue"
+                particleSize={2}
+                density={4}
+                color="#ffffff"
+                highlightColor="#8b5cf6"
+                scatter={180}
+                gatherDuration={1600}
+                stagger={420}
+                pointerRepel={40}
+                repelRadius={120}
+                idleDrift={0.7}
+                trigger="mount"
+                fontSize="clamp(3.5rem, 9vw, 7rem)"
+                fontWeight={800}
+                fontFamily="inherit"
+                glow
+              />
+            </div>
+            <WarpText
+              text="Never miss something important."
+              color="#312e81"
+              warpStrength={0.08}
+              warpScale={1.7}
+              speed={0.55}
+              pointerInfluence={0.42}
+              pointerStrength={0.38}
+              refraction={0.018}
+              ripple
+              fontSize="clamp(2rem, 5vw, 4rem)"
+              fontWeight={700}
+              fontFamily="inherit"
+              style={{ height: '150px' }}
+            />
+            <h1 className="visually-hidden">EduRescue — Never miss something important.</h1>
             <p className="hero-sub">
               Same announcements + different students = different action
               queues. Switch profiles to see personalization in action.
             </p>
+            <nav aria-label="Section shortcuts" className="hero-gooey">
+              <GooeyNav
+                items={[
+                  { label: 'Overview', href: '#overview' },
+                  { label: 'Announcements', href: '#announcements' },
+                  { label: 'Action Queue', href: '#action-queue' },
+                ]}
+              />
+            </nav>
           </div>
           <span
             className="demo-badge"
@@ -255,17 +311,51 @@ export default function App() {
         </div>
       </header>
 
+      <section className="container scroll-bridge" aria-label="From announcements to action">
+        <ScrollExpand
+          src={scrollArt}
+          mediaType="image"
+          alt="EduRescue dashboard preview"
+          scrollHint="Scroll to enter your dashboard"
+          useWindowScroll
+          enabled
+          startWidth={55}
+          startHeight={60}
+          startRadius={24}
+          endRadius={0}
+          mediaZoom={1.2}
+          scrollDistance={1.0}
+          holdDistance={0.25}
+          smoothing={0.09}
+          overlayScrim={0.25}
+        >
+          <div className="scroll-expand-cta">
+            <p className="scroll-expand-cta-title">Same announcements + different students = different action queues.</p>
+            <p className="muted">Switch profiles to see personalization in action.</p>
+          </div>
+        </ScrollExpand>
+      </section>
+
       <main className="container layout">
         <div className="side">
           {students.length > 0 ? (
-            <ProfileSwitcher
-              students={students.map((s) => ({
-                ...s,
-                ...(overrides[s.id] ?? {}),
-              }))}
-              selectedId={selectedId}
-              onSelect={handleSelectStudent}
-            />
+            <BorderGlow
+              backgroundColor="#ffffff"
+              borderRadius={18}
+              glowColor="270 85 65"
+              colors={['#a855f7', '#c084fc', '#f472b6']}
+              glowIntensity={0.8}
+              fillOpacity={0.35}
+            >
+              <ProfileSwitcher
+                students={students.map((s) => ({
+                  ...s,
+                  ...(overrides[s.id] ?? {}),
+                }))}
+                selectedId={selectedId}
+                onSelect={handleSelectStudent}
+              />
+            </BorderGlow>
           ) : null}
           {student ? (
             <StudentProfileCard
@@ -320,12 +410,21 @@ export default function App() {
               </div>
             </section>
           ) : (
-            <ActionQueue
-              items={queue}
-              status={status}
-              studentName={studentDisplayName}
-              onOpen={handleOpenWhy}
-            />
+            <BorderGlow
+              backgroundColor="#ffffff"
+              borderRadius={18}
+              glowColor="270 85 65"
+              colors={['#a855f7', '#c084fc', '#f472b6']}
+              glowIntensity={0.8}
+              fillOpacity={0.35}
+            >
+              <ActionQueue
+                items={queue}
+                status={status}
+                studentName={studentDisplayName}
+                onOpen={handleOpenWhy}
+              />
+            </BorderGlow>
           )}
         </div>
       </main>
@@ -344,6 +443,22 @@ export default function App() {
         onClose={() => setSelectedItem(null)}
         triggerRef={whyTriggerRef}
       />
+
+      <div className="dock-fixed">
+        <Dock
+          items={[
+            { icon: <span aria-hidden="true">👤</span>, label: 'Profile', onClick: () => scrollToSection('profile') },
+            { icon: <span aria-hidden="true">📣</span>, label: 'Announcements', onClick: () => scrollToSection('announcements') },
+            { icon: <span aria-hidden="true">📊</span>, label: 'Metrics', onClick: () => scrollToSection('metrics') },
+            { icon: <span aria-hidden="true">⚡</span>, label: 'Action Queue', onClick: () => scrollToSection('action-queue') },
+          ]}
+          panelHeight={68}
+          baseItemSize={50}
+          magnification={70}
+          distance={200}
+          dockHeight={256}
+        />
+      </div>
     </div>
   );
 }

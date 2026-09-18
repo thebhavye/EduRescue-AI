@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import type { Announcement } from '../types';
+import { SafeSpecularButton } from './SpecularButton/SafeSpecularButton';
 
 interface Props {
   announcements: Announcement[];
@@ -75,7 +76,7 @@ export function AnnouncementInput({
     profileValid && status !== 'processing' && charCount >= 20;
 
   return (
-    <section className="card input-card" aria-labelledby="input-heading">
+    <section className="card input-card" id="announcements" aria-labelledby="input-heading">
       <div className="card-head">
         <h2 id="input-heading">Announcements</h2>
         <button
@@ -151,12 +152,27 @@ export function AnnouncementInput({
         </p>
       ) : null}
 
-      <button
+      <SafeSpecularButton
         type="button"
-        className="btn btn-primary btn-block"
+        className="specular-block"
         disabled={!canProcess}
         onClick={onProcess}
-        aria-disabled={!canProcess}
+        size="lg"
+        radius={18}
+        tint="#ffffff"
+        tintOpacity={0}
+        blur={0}
+        textColor="#ffffff"
+        lineColor="#ffffff"
+        baseColor="#8b5cf6"
+        intensity={1}
+        shineSize={10}
+        shineFade={40}
+        thickness={1}
+        speed={0.35}
+        followMouse
+        proximity={250}
+        autoAnimate={false}
       >
         {status === 'processing' ? (
           <span className="btn-loading">
@@ -166,7 +182,7 @@ export function AnnouncementInput({
         ) : (
           'Process Announcement'
         )}
-      </button>
+      </SafeSpecularButton>
       {!canProcess && status !== 'processing' ? (
         <p className="muted small">
           {!profileValid

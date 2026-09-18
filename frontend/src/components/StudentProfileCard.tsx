@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { validateProfile, type FieldErrors } from '../profileValidation';
 import type { StudentProfile } from '../types';
+import { SafeSpecularButton } from './SpecularButton/SafeSpecularButton';
 
 interface Props {
   student: StudentProfile;
@@ -104,14 +105,30 @@ export function StudentProfileCard({ student, onChange, onValidityChange }: Prop
         </div>
       </div>
       <p className="muted small">Interests: {student.interests.join(', ')}</p>
-      <button
+      <SafeSpecularButton
         type="button"
-        className="btn btn-secondary btn-block"
+        className="specular-block"
         disabled={!dirty || !validation.valid}
         onClick={commit}
+        size="lg"
+        radius={18}
+        tint="#ffffff"
+        tintOpacity={0}
+        blur={0}
+        textColor="#ffffff"
+        lineColor="#ffffff"
+        baseColor="#8b5cf6"
+        intensity={1}
+        shineSize={10}
+        shineFade={40}
+        thickness={1}
+        speed={0.35}
+        followMouse
+        proximity={250}
+        autoAnimate={false}
       >
         Save profile
-      </button>
+      </SafeSpecularButton>
     </section>
   );
 }

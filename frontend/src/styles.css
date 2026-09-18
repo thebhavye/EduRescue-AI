@@ -23,6 +23,10 @@
 
 * { box-sizing: border-box; }
 
+html { scroll-behavior: smooth; }
+
+section[id] { scroll-margin-top: 24px; }
+
 html, body {
   margin: 0;
   padding: 0;
@@ -68,12 +72,32 @@ html, body {
 }
 .skip-link:focus { left: 8px; top: 8px; }
 
-.hero { padding: 28px 0 8px; }
+.hero { padding: 64px 0 32px; overflow-x: clip; }
 .hero-inner {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 16px;
+  gap: 24px;
+}
+.hero-copy { flex: 1 1 auto; min-width: 0; max-width: 100%; }
+.hero-title-block {
+  min-height: 200px;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+.hero-title-block .particle-text { height: 100%; min-height: 200px; }
+.hero .warp-text {
+  min-height: 150px;
+  max-width: 100%;
+  overflow: hidden;
+  margin-top: 8px;
+}
+@media (max-width: 700px) {
+  .hero { padding: 40px 0 20px; }
+  .hero-inner { flex-wrap: wrap; }
+  .hero-title-block { min-height: 160px; }
+  .hero-title-block .particle-text { min-height: 160px; }
 }
 .eyebrow {
   text-transform: uppercase;
@@ -91,7 +115,7 @@ html, body {
   color: #18181b;
   text-wrap: balance;
 }
-.hero-sub { color: var(--text-secondary); max-width: 640px; }
+.hero-sub { color: var(--text-secondary); max-width: 640px; margin: 20px 0 0; }
 .demo-badge {
   font-size: 12px;
   font-weight: 600;
@@ -106,20 +130,20 @@ html, body {
 .layout {
   display: grid;
   grid-template-columns: 380px 1fr;
-  gap: 20px;
-  padding: 20px;
+  gap: 28px;
+  padding: 32px 20px 40px;
   align-items: start;
 }
 @media (max-width: 900px) {
   .layout { grid-template-columns: 1fr; }
 }
-.side, .main-col { display: grid; gap: 16px; align-content: start; }
+.side, .main-col { display: grid; gap: 24px; align-content: start; }
 
 .card {
   background: var(--card);
   border: 1px solid var(--card-border);
   border-radius: var(--radius);
-  padding: 18px;
+  padding: 24px;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   box-shadow: 0 8px 24px rgba(24, 24, 27, 0.06);
@@ -336,5 +360,64 @@ html, body {
 }
 .skeleton-line.short { width: 40%; }
 
-.footer { padding: 20px 0 40px; }
+.footer { padding: 20px 0 140px; }
 .footer .muted { color: var(--muted); }
+
+/* ---- React Bits foreground accents (presentation only) ---- */
+.hero-gooey {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.scroll-bridge {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.scroll-bridge .scroll-expand {
+  border-radius: 20px;
+}
+
+.scroll-expand-cta {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(24, 24, 27, 0.08);
+  border-radius: 16px;
+  padding: 20px 28px;
+  max-width: min(560px, 86%);
+  box-shadow: 0 12px 32px rgba(24, 24, 27, 0.12);
+}
+
+.scroll-expand-cta-title {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 800;
+  color: #18181b;
+}
+
+.scroll-expand-cta .muted { margin: 0; }
+
+.dock-fixed {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 12px;
+  z-index: 30;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.dock-fixed .dock-outer {
+  pointer-events: auto;
+}
+
+.specular-block {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.specular-fallback {
+  font-size: 1rem;
+  padding: 14px 30px;
+}

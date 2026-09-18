@@ -1,0 +1,84 @@
+.dock-outer {
+  margin: 0 0.5rem;
+  display: flex;
+  max-width: 100%;
+  align-items: center;
+}
+
+.dock-panel {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: flex-end;
+  width: fit-content;
+  gap: 1rem;
+  border-radius: 1rem;
+  background-color: #120F17;
+  border: 1px solid #222;
+  padding: 0 0.5rem 0.5rem;
+}
+
+.dock-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background-color: #120F17;
+  border: 1px solid #222;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  outline: none;
+}
+
+.dock-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dock-label {
+  position: absolute;
+  top: -1.5rem;
+  left: 50%;
+  width: fit-content;
+  white-space: pre;
+  border-radius: 0.375rem;
+  border: 1px solid #222;
+  background-color: #120F17;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+  color: #fff;
+  transform: translateX(-50%);
+}
+
+/* ---- EduRescue light-theme adaptation (behavior untouched) ---- */
+.dock-panel {
+  background-color: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(24, 24, 27, 0.08);
+  box-shadow: 0 12px 32px rgba(24, 24, 27, 0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.dock-item {
+  background-color: #ffffff;
+  border: 1px solid rgba(24, 24, 27, 0.1);
+  color: #312e81;
+  font-size: 1.25rem;
+}
+
+.dock-item:focus-visible {
+  outline: 2px solid #8b5cf6;
+  outline-offset: 2px;
+}
+
+.dock-label {
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  background-color: #f5f0ff;
+  color: #5b21b6;
+}

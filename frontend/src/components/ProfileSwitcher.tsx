@@ -8,7 +8,7 @@ interface Props {
 
 export function ProfileSwitcher({ students, selectedId, onSelect }: Props) {
   return (
-    <section className="card" aria-labelledby="profile-switcher-heading">
+    <section className="card" id="profile" aria-labelledby="profile-switcher-heading">
       <h2 id="profile-switcher-heading">Student profile</h2>
       <label className="field-label" htmlFor="profile-select">
         Active profile

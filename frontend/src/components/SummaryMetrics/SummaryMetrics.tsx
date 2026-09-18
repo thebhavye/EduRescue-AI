@@ -22,7 +22,7 @@ export function SummaryMetrics({ queue }: SummaryMetricsProps) {
   ];
 
   return (
-    <section className="card metrics-summary" aria-labelledby="metrics-heading">
+    <section className="card metrics-summary" id="metrics" aria-labelledby="metrics-heading">
       <h2 id="metrics-heading">Summary metrics</h2>
       <div className="metrics-grid">
         {cards.map((c) => (
