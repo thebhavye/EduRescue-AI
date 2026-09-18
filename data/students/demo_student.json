@@ -1,0 +1,8 @@
+{
+  "student_id": "student_001",
+  "name": "Demo Student",
+  "branch": "CSE",
+  "year": 3,
+  "cgpa": 8.4,
+  "interests": ["AI", "ML", "Generative AI"]
+}

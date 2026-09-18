@@ -1,0 +1,12 @@
+{
+  "announcement_id": "announcement_001",
+  "title": "AI Internship Opportunity",
+  "content": "Students from CSE and IT branches in 3rd year with CGPA above 8.0 are eligible for the AI internship program. Registration closes on September 25 at 11:59 PM.",
+  "source": "placement_cell",
+  "category": "internship",
+  "deadline": "2026-09-25T23:59:00+05:30",
+  "eligible_branches": ["CSE", "IT"],
+  "eligible_years": [3],
+  "min_cgpa": 8.0,
+  "action_required": "Register"
+}
