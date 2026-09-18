@@ -9,6 +9,8 @@ POLICY = ROOT / "backend" / "policies" / "eligibility.cedar"
 
 
 def is_eligible(student: dict, announcement: dict) -> bool:
+    min_cgpa = announcement.get("min_cgpa")
+
     entities = [
         {
             "uid": {"type": "Student", "id": "student"},
@@ -22,9 +24,9 @@ def is_eligible(student: dict, announcement: dict) -> bool:
         {
             "uid": {"type": "Announcement", "id": "announcement"},
             "attrs": {
-                "eligible_branches": announcement["eligible_branches"],
-                "eligible_years": announcement["eligible_years"],
-                "min_cgpa10": int(announcement["min_cgpa"] * 10),
+                "eligible_branches": announcement.get("eligible_branches", []),
+                "eligible_years": announcement.get("eligible_years", []),
+                "min_cgpa10": int(min_cgpa * 10) if min_cgpa is not None else 0,
             },
             "parents": [],
         },
@@ -44,18 +46,28 @@ def is_eligible(student: dict, announcement: dict) -> bool:
         entities_file.write_text(json.dumps(entities), encoding="utf-8")
         request_file.write_text(json.dumps(request), encoding="utf-8")
 
-        result = subprocess.run(
-            [
-                "cedar",
-                "authorize",
-                "--schema", str(SCHEMA),
-                "--policies", str(POLICY),
-                "--entities", str(entities_file),
-                "--request-json", str(request_file),
-            ],
-            capture_output=True,
-            text=True,
-        )
+        try:
+            result = subprocess.run(
+                [
+                    "cedar",
+                    "authorize",
+                    "--schema",
+                    str(SCHEMA),
+                    "--policies",
+                    str(POLICY),
+                    "--entities",
+                    str(entities_file),
+                    "--request-json",
+                    str(request_file),
+                ],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+        except FileNotFoundError as exc:
+            raise RuntimeError(
+                "Cedar CLI is not installed or not available on PATH."
+            ) from exc
 
         output = (result.stdout + result.stderr).strip().upper()
 
