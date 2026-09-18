@@ -394,12 +394,12 @@ export default function App() {
         <div className="main-col">
           <SummaryMetrics queue={queue} />
           {!student ? (
-            <section className="card" aria-label="Loading action queue">
+            <section className="card" id="action-queue" aria-label="Loading action queue">
               <div className="skeleton-line short" />
               <div className="skeleton-line" />
             </section>
           ) : !profileValid ? (
-            <section className="card" aria-labelledby="queue-heading">
+            <section className="card" id="action-queue" aria-labelledby="queue-heading">
               <h2 id="queue-heading">Personalized action queue unavailable</h2>
               <div className="empty">
                 <p className="empty-title">Profile needs attention ⚠️</p>

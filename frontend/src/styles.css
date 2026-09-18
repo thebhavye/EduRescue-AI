@@ -321,7 +321,9 @@ html, body {
   background: rgba(24, 24, 27, 0.35);
   display: grid;
   place-items: center;
-  z-index: 20;
+  /* Above the floating Dock (z-index 30) so an open aria-modal cannot be
+     clicked through or covered; below the skip link (z-index 50). */
+  z-index: 40;
   padding: 20px;
 }
 .dialog {
