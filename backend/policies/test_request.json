@@ -1,0 +1,12 @@
+{
+  "student": {
+    "branch": "CSE",
+    "year": 3,
+    "cgpa": 8.4
+  },
+  "announcement": {
+    "eligible_branches": ["CSE", "IT"],
+    "eligible_years": [3],
+    "min_cgpa": 8.0
+  }
+}

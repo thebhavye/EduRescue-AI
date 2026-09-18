@@ -1,0 +1,16 @@
+entity Student {
+    branch: String,
+    year: Long,
+    cgpa10: Long
+};
+
+entity Announcement {
+    eligible_branches: Set<String>,
+    eligible_years: Set<Long>,
+    min_cgpa10: Long
+};
+
+action "apply" appliesTo {
+    principal: Student,
+    resource: Announcement
+};
