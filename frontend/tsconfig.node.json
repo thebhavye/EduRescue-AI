@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    "lib": ["ES2022"],
+    "module": "CommonJS",
+    "strict": true,
+    "nodeDependencies": [""]
+  }
+}
