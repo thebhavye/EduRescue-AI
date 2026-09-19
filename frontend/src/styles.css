@@ -34,6 +34,7 @@ html, body {
   background: var(--bg);
   color: var(--text);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  overflow-x: clip;
 }
 
 /* Page-wide Molten Metal background — stays behind everything. */
@@ -56,9 +57,9 @@ html, body {
   background: rgba(250, 249, 255, 0.08);
 }
 
-.app { position: relative; z-index: 2; min-height: 100vh; }
+.app { position: relative; z-index: 2; min-height: 100vh; padding-bottom: 120px; }
 
-.container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
 .skip-link {
   position: absolute;
@@ -72,32 +73,61 @@ html, body {
 }
 .skip-link:focus { left: 8px; top: 8px; }
 
-.hero { padding: 64px 0 32px; overflow-x: clip; }
+/* ---- SECTION 1: HERO (centered, fits first viewport: 70–85vh) ---- */
+.hero {
+  position: relative;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 0 40px;
+  overflow-x: clip;
+}
+@media (min-height: 700px) {
+  .hero { max-height: 85vh; }
+}
 .hero-inner {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 24px;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0;
+  width: 100%;
 }
-.hero-copy { flex: 1 1 auto; min-width: 0; max-width: 100%; }
+.hero-copy {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
 .hero-title-block {
   min-height: 200px;
   width: 100%;
   max-width: 100%;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
 }
 .hero-title-block .particle-text { height: 100%; min-height: 200px; }
 .hero .warp-text {
   min-height: 150px;
   max-width: 100%;
   overflow: hidden;
-  margin-top: 8px;
+  margin-top: 32px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
 }
 @media (max-width: 700px) {
-  .hero { padding: 40px 0 20px; }
-  .hero-inner { flex-wrap: wrap; }
+  .hero { padding: 40px 0 28px; min-height: 62vh; }
   .hero-title-block { min-height: 160px; }
   .hero-title-block .particle-text { min-height: 160px; }
+  .hero .warp-text { margin-top: 24px; margin-bottom: 20px; }
 }
 .eyebrow {
   text-transform: uppercase;
@@ -115,29 +145,38 @@ html, body {
   color: #18181b;
   text-wrap: balance;
 }
-.hero-sub { color: var(--text-secondary); max-width: 640px; margin: 20px 0 0; }
-.demo-badge {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--accent);
-  border: 1px solid var(--card-border-accent);
-  border-radius: 999px;
-  padding: 6px 12px;
-  background: #f5f0ff;
-  white-space: nowrap;
+.hero-sub {
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 16px;
+  line-height: 1.6;
+  text-wrap: balance;
 }
 
+/* ---- SECTION 3: DASHBOARD (balanced two-column rhythm) ---- */
 .layout {
   display: grid;
-  grid-template-columns: 380px 1fr;
-  gap: 28px;
-  padding: 32px 20px 40px;
+  grid-template-columns: minmax(300px, 0.85fr) minmax(520px, 1.35fr);
+  gap: 26px;
+  padding: 96px 20px 40px;
   align-items: start;
 }
-@media (max-width: 900px) {
-  .layout { grid-template-columns: 1fr; }
+.dashboard-eyebrow {
+  grid-column: 1 / -1;
+  text-align: center;
+  margin: 0 0 4px;
 }
-.side, .main-col { display: grid; gap: 24px; align-content: start; }
+@media (max-width: 960px) {
+  .layout { grid-template-columns: minmax(300px, 0.9fr) minmax(0, 1.1fr); }
+}
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; padding-top: 72px; }
+}
+.side, .main-col { display: grid; gap: 28px; align-content: start; min-width: 0; }
+/* Profile Switcher + Profile Details read as one profile area. */
+.profile-stack { display: grid; gap: 24px; align-content: start; }
+.profile-stack .card { border-radius: var(--radius); }
 
 .card {
   background: var(--card);
@@ -278,7 +317,7 @@ html, body {
 .field-label { display: block; font-size: 13px; font-weight: 600; margin: 10px 0 6px; color: var(--text-secondary); }
 .input, .select, .textarea {
   width: 100%;
-  border: 1px solid #e4e4e7;
+  border: 1px solid #c9c9d1;
   border-radius: 10px;
   background: #ffffff;
   color: #18181b;
@@ -367,18 +406,26 @@ html, body {
 
 /* ---- React Bits foreground accents (presentation only) ---- */
 .hero-gooey {
-  margin-top: 24px;
+  margin-top: 34px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
+/* ---- SECTION 2: SCROLL TRANSITION (constrained cinematic bridge) ---- */
 .scroll-bridge {
-  padding-top: 8px;
-  padding-bottom: 8px;
+  max-width: 1150px;
+  margin: 60px auto 100px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+@media (max-width: 700px) {
+  .scroll-bridge { margin: 40px auto 72px; }
 }
 
 .scroll-bridge .scroll-expand {
   border-radius: 20px;
+  margin: 0 auto;
 }
 
 .scroll-expand-cta {
@@ -399,19 +446,25 @@ html, body {
 
 .scroll-expand-cta .muted { margin: 0; }
 
+/* ---- SECTION 4: FIXED DOCK (compact persistent nav, never covers content) ---- */
 .dock-fixed {
   position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 12px;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 30;
   display: flex;
   justify-content: center;
   pointer-events: none;
+  max-width: calc(100vw - 32px);
 }
 
 .dock-fixed .dock-outer {
   pointer-events: auto;
+  max-width: 100%;
+}
+@media (max-width: 700px) {
+  .dock-fixed { bottom: 16px; max-width: calc(100vw - 16px); }
 }
 
 .specular-block {
@@ -419,7 +472,39 @@ html, body {
   margin-top: 10px;
 }
 
+/* ---- Primary-action contrast (configures OUR SpecularButton usage only;
+   component files untouched): solid purple fill, white label, visible
+   border + shadow so the label never disappears into the light page. ---- */
+.specular-button.specular-block {
+  border: 1px solid #5b21b6;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 8px 20px rgba(109, 74, 255, 0.38);
+  font-weight: 700;
+}
+.specular-button.specular-block:hover:not(:disabled) {
+  --sb-tint: #5b21b6;
+  border-color: #4c1d95;
+}
+.specular-button.specular-block:focus-visible {
+  outline: 3px solid #7c3aed;
+  outline-offset: 3px;
+}
+.specular-button.specular-block:disabled {
+  /* Keep the disabled label readable: solid fill stays, component dims it. */
+  --sb-tint: #8b5cf6;
+  border-color: #7c3aed;
+}
+
 .specular-fallback {
   font-size: 1rem;
   padding: 14px 30px;
+}
+
+/* ---- Responsive guards: never allow horizontal page scrolling ---- */
+img, svg, canvas, video { max-width: 100%; }
+@media (max-width: 700px) {
+  .queue-meta div { grid-template-columns: 1fr; gap: 2px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .card { padding: 20px; }
 }

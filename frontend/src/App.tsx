@@ -255,8 +255,8 @@ export default function App() {
                 text="EduRescue"
                 particleSize={2}
                 density={4}
-                color="#ffffff"
-                highlightColor="#8b5cf6"
+                color="#312e81"
+                highlightColor="#7c3aed"
                 scatter={180}
                 gatherDuration={1600}
                 stagger={420}
@@ -264,7 +264,7 @@ export default function App() {
                 repelRadius={120}
                 idleDrift={0.7}
                 trigger="mount"
-                fontSize="clamp(3.5rem, 9vw, 7rem)"
+                fontSize="clamp(4rem, 10vw, 8rem)"
                 fontWeight={800}
                 fontFamily="inherit"
                 glow
@@ -300,14 +300,6 @@ export default function App() {
               />
             </nav>
           </div>
-          <span
-            className="demo-badge"
-            title="UI is using local mock data until the backend contract lands"
-          >
-            {announcementService.source === 'mock'
-              ? '● Demo mode · mock data'
-              : '● Live API'}
-          </span>
         </div>
       </header>
 
@@ -336,8 +328,10 @@ export default function App() {
         </ScrollExpand>
       </section>
 
-      <main className="container layout">
+      <main className="container layout" aria-label="EduRescue dashboard">
+        <p className="eyebrow dashboard-eyebrow">EduRescue Dashboard · your personalized action queue</p>
         <div className="side">
+          <div className="profile-stack">
           {students.length > 0 ? (
             <BorderGlow
               backgroundColor="#ffffff"
@@ -369,6 +363,7 @@ export default function App() {
               <div className="skeleton-line" />
             </section>
           )}
+          </div>
           <AnnouncementInput
             announcements={announcements}
             value={inputText}

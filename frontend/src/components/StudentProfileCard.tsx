@@ -112,12 +112,12 @@ export function StudentProfileCard({ student, onChange, onValidityChange }: Prop
         onClick={commit}
         size="lg"
         radius={18}
-        tint="#ffffff"
-        tintOpacity={0}
+        tint="#6D4AFF"
+        tintOpacity={1}
         blur={0}
         textColor="#ffffff"
         lineColor="#ffffff"
-        baseColor="#8b5cf6"
+        baseColor="#4c1d95"
         intensity={1}
         shineSize={10}
         shineFade={40}
