@@ -216,20 +216,6 @@ export default function App() {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  // P2: on narrow viewports the magnified Dock panel can outgrow the viewport
-  // and get clipped (page uses overflow-x: clip). Reduce magnification there;
-  // normal desktop widths keep the full magnification. Desktop-first default
-  // (false) so SSR/test environments without matchMedia keep desktop behavior.
-  const [narrowDock, setNarrowDock] = useState(false);
-  useEffect(() => {
-    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
-    const mq = window.matchMedia('(max-width: 700px)');
-    setNarrowDock(mq.matches);
-    const onChange = (e: MediaQueryListEvent) => setNarrowDock(e.matches);
-    mq.addEventListener('change', onChange);
-    return () => mq.removeEventListener('change', onChange);
-  }, []);
-
   return (
     <div className="app">
       <div className="molten-background" aria-hidden="true">
@@ -462,9 +448,9 @@ export default function App() {
             { icon: <span aria-hidden="true">⚡</span>, label: 'Action Queue', onClick: () => scrollToSection('action-queue') },
           ]}
           panelHeight={68}
-          baseItemSize={narrowDock ? 44 : 50}
-          magnification={narrowDock ? 54 : 70}
-          distance={narrowDock ? 160 : 200}
+          baseItemSize={50}
+          magnification={70}
+          distance={200}
           dockHeight={256}
         />
       </div>

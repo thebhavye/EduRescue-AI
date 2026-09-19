@@ -21,6 +21,33 @@
   --radius: 18px;
 }
 
+[data-theme='dark'] {
+  /* ---- TRUE BLACK BASE ---- */
+  --bg: #030305;
+  /* surfaces */
+  --card: rgba(10, 10, 15, 0.82);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --card-border-accent: rgba(167, 139, 250, 0.18);
+  /* text */
+  --text: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.70);
+  --muted: rgba(255, 255, 255, 0.50);
+  /* accents — keep EduRescue purple identity */
+  --accent: #a78bfa;
+  --accent-2: #c084fc;
+  --accent-soft: rgba(167, 139, 250, 0.12);
+  /* semantic */
+  --success-bg: rgba(22, 101, 52, 0.35);
+  --success-text: #86efac;
+  --success-border: rgba(134, 239, 172, 0.25);
+  --warning-bg: rgba(146, 64, 14, 0.35);
+  --warning-text: #fde047;
+  --warning-border: rgba(253, 224, 71, 0.25);
+  --danger-bg: rgba(159, 18, 57, 0.35);
+  --danger-text: #fda4af;
+  --danger-border: rgba(253, 164, 175, 0.25);
+}
+
 * { box-sizing: border-box; }
 
 html { scroll-behavior: smooth; }
@@ -37,24 +64,43 @@ html, body {
   overflow-x: clip;
 }
 
-/* Page-wide Molten Metal background — stays behind everything. */
+/* ---- LAYER 1: solid page background (always behind everything) ---- */
+html, body {
+  background: var(--bg) !important;
+}
+
+/* ---- LAYER 2: MoltenMetal ambient effect ---- */
 .molten-background {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
+  /* Light mode: full presence */
+  opacity: 1;
+  transition: opacity 0.6s ease;
+}
+/* Dark mode: subtle ambient texture only — base reads as black */
+[data-theme='dark'] .molten-background {
+  opacity: 0.14;
+  mix-blend-mode: screen;
 }
 .molten-background .molten-metal-container {
   width: 100%;
   height: 100%;
 }
+
+/* ---- LAYER 2b: readability scrim (light = gentle warmth, dark = pure black reinforcement) ---- */
 .readability-overlay {
   position: fixed;
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: rgba(250, 249, 255, 0.08);
+  background: rgba(250, 249, 255, 0.06);
+}
+[data-theme='dark'] .readability-overlay {
+  /* Extra black wash to ensure base reads as true black */
+  background: rgba(0, 0, 0, 0.72);
 }
 
 .app { position: relative; z-index: 2; min-height: 100vh; padding-bottom: 120px; }
@@ -142,7 +188,7 @@ html, body {
   font-size: 44px;
   line-height: 1.05;
   letter-spacing: -0.02em;
-  color: #18181b;
+  color: var(--text);
   text-wrap: balance;
 }
 .hero-sub {
@@ -186,6 +232,10 @@ html, body {
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   box-shadow: 0 8px 24px rgba(24, 24, 27, 0.06);
+}
+[data-theme='dark'] .card {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  background: rgba(10, 10, 15, 0.85);
 }
 .card h2 { margin: 0 0 12px; font-size: 18px; color: var(--text); }
 .card-head {
@@ -516,3 +566,156 @@ img, svg, canvas, video { max-width: 100%; }
   .form-grid { grid-template-columns: 1fr; }
   .card { padding: 20px; }
 }
+
+/* =================================================================
+   DARK MODE OVERRIDES — applied only when [data-theme='dark'] is set
+   on <html>. These override light-mode hardcoded values to ensure
+   the true-black aesthetic: black base + subtle purple energy.
+   ================================================================= */
+
+/* ---- Hero: text must pop against the black background ---- */
+[data-theme='dark'] .hero-sub {
+  color: rgba(255, 255, 255, 0.70);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8);
+}
+[data-theme='dark'] .eyebrow {
+  color: var(--accent);
+  text-shadow: 0 0 20px rgba(167, 139, 250, 0.5);
+}
+/* GooeyNav's own light-theme adaptation uses deep indigo, which vanishes on
+   black — brighten it in dark mode (component files untouched). */
+[data-theme='dark'] .gooey-nav-container nav ul,
+[data-theme='dark'] .gooey-nav-container nav ul li {
+  color: #ede9fe;
+}
+[data-theme='dark'] .gooey-nav-container nav ul li:focus-within:has(:focus-visible) {
+  box-shadow: 0 0 0.5px 1.5px #a78bfa;
+}
+[data-theme='dark'] .scroll-expand-cta {
+  background: rgba(10, 10, 15, 0.92);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+}
+[data-theme='dark'] .scroll-expand-cta-title {
+  color: #ffffff;
+}
+
+/* ---- Dashboard text ---- */
+[data-theme='dark'] .dashboard-eyebrow {
+  color: var(--accent);
+}
+
+/* ---- Queue items ---- */
+[data-theme='dark'] .queue-item {
+  background: rgba(10, 10, 15, 0.82);
+  border-color: rgba(255, 255, 255, 0.07);
+}
+[data-theme='dark'] .queue-item.priority-high {
+  background: rgba(159, 18, 57, 0.2);
+  border-color: var(--danger-border);
+}
+[data-theme='dark'] .queue-item.priority-medium {
+  background: rgba(146, 64, 14, 0.2);
+  border-color: var(--warning-border);
+}
+[data-theme='dark'] .queue-item.priority-low {
+  background: rgba(22, 101, 52, 0.2);
+  border-color: var(--success-border);
+}
+
+/* ---- Metric items ---- */
+[data-theme='dark'] .metric-item {
+  background: rgba(10, 10, 15, 0.82);
+  border-color: rgba(255, 255, 255, 0.07);
+}
+[data-theme='dark'] .metric-count {
+  color: #ffffff;
+}
+
+/* ---- Inputs / selects / textareas ---- */
+[data-theme='dark'] .input,
+[data-theme='dark'] .select,
+[data-theme='dark'] .textarea {
+  background: rgba(10, 10, 15, 0.9);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+[data-theme='dark'] .input::placeholder,
+[data-theme='dark'] .textarea::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+[data-theme='dark'] .input:focus,
+[data-theme='dark'] .select:focus,
+[data-theme='dark'] .textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2);
+}
+
+/* ---- Buttons ---- */
+[data-theme='dark'] .btn {
+  background: rgba(15, 15, 22, 0.9);
+  border-color: rgba(255, 255, 255, 0.10);
+  color: #ffffff;
+}
+[data-theme='dark'] .btn:hover:not(:disabled) {
+  border-color: rgba(167, 139, 250, 0.5);
+  background: rgba(20, 20, 30, 0.95);
+}
+[data-theme='dark'] .btn-primary {
+  background: linear-gradient(135deg, #7c3aed, #5b21b6);
+  border: none;
+  color: #ffffff;
+}
+[data-theme='dark'] .btn-secondary {
+  background: rgba(15, 15, 22, 0.9);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ---- Profile switcher chips ---- */
+[data-theme='dark'] .switcher-buttons .btn-secondary {
+  background: rgba(15, 15, 22, 0.9);
+  color: rgba(255, 255, 255, 0.75);
+}
+[data-theme='dark'] .switcher-buttons .btn-primary {
+  background: rgba(124, 58, 237, 0.25);
+  color: #c4b5fd;
+  border-color: rgba(167, 139, 250, 0.35);
+}
+
+/* ---- Dialog ---- */
+[data-theme='dark'] .dialog {
+  background: #0a0a0f;
+  border-color: rgba(167, 139, 250, 0.2);
+  color: #ffffff;
+}
+[data-theme='dark'] .dialog-head .link-btn {
+  background: rgba(15, 15, 22, 0.9);
+  border-color: rgba(255, 255, 255, 0.10);
+  color: rgba(255, 255, 255, 0.70);
+}
+[data-theme='dark'] .overlay {
+  background: rgba(0, 0, 0, 0.70);
+}
+
+/* ---- Skeleton ---- */
+[data-theme='dark'] .skeleton-line {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+/* ---- Footer ---- */
+[data-theme='dark'] .footer .muted {
+  color: rgba(255, 255, 255, 0.40);
+}
+
+/* ---- Alerts ---- */
+[data-theme='dark'] .alert-error {
+  background: var(--danger-bg);
+  border-color: var(--danger-border);
+  color: var(--danger-text);
+}
+[data-theme='dark'] .alert-success {
+  background: var(--success-bg);
+  border-color: var(--success-border);
+  color: var(--success-text);
+}
+
